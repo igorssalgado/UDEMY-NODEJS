@@ -26,10 +26,10 @@ const addNote = function (title, body) {
 const removeNotes = function (title) {
     const notes = loadNotes();
     const notesToKeep = notes.filter(function (note){
-        if (title.length === 0){
-            console.log('no notes to ve removed');
+        if (title === note.title){
+            console.log('this note was removed: ' + note.title);
         }else{
-            console.log('note removed');
+            console.log('this note wont be removed: ' + note.title);
             return note.title !== title;
         }
     })
