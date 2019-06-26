@@ -29,7 +29,7 @@ const removeNotes = function (title) {
        return note.title !== title;
     })
     if (notes.length === notesToKeep.length){
-        console.log(chalk.bgRed("no note removed!"));
+        console.log(chalk.bgRed("no note '" + title + "' to be removed!"));
     }else{
         console.log(chalk.bgGreen("note removed!"));
     }
