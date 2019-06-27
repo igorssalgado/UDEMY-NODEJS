@@ -7,17 +7,31 @@ const getNotes = () => {
 
 const addNote = (title, body) => {
     const notes = loadNotes();
-    const duplicateNotes = notes.filter((note) => note.title === title)
+    // const duplicateNotes = notes.filter((note) => note.title === title) //.filter returns an array, it loop thru the whole array
+    const duplicateNote = notes.find((note) => note.title === title) //.find returns a single variable, it stops once he find a match if no match found it returns undefined.
 
-    if (duplicateNotes.length === 0) {
-        notes.push({
-            title: title,
+    if (!duplicateNote) { //if false(undefined) means there is no duplicate
+        notes.push({ 
+            title: title,  // runs if there is NO duplicate note 
             body: body
         })
         saveNotes(notes);
         console.log(chalk.bgGreen("New note added!"));
-    } else {
+    } else { // runs if there is a duplicate note 
         console.log(chalk.bgRed("Note title taken!"));
+    }
+}
+
+const readNote = (title) => {
+    const notes = loadNotes();
+    const note = notes.find((note) => note.title === title);
+
+    if (note) {
+        console.log(chalk.inverse(note.title));
+        console.log("- " + note.body);
+    }else{
+        console.log(chalk.red.inverse("No note found!"));
+        console.log(notes);
     }
 }
 
@@ -62,5 +76,6 @@ module.exports = {
     getNotes: getNotes,
     addNote: addNote,
     removeNotes: removeNotes,
-    listNotes: listNotes
+    listNotes: listNotes,
+    readNote: readNote
 }
