@@ -1,5 +1,6 @@
 const request = require('request');
 const chalk = require('chalk');
+const fs = require('fs');
 
 const weatherCheck = (id) => {
     
@@ -22,20 +23,31 @@ const findId = (city) => {
 
 }
 
-const dengue = (id) => {
+const dengue = () => {
     
-    const url = 'http://apiadvisor.climatempo.com.br/api/v1/index/mosquito/locale/' + id + '3477/days/5?token=d048672a8b04194a3fc09870673808d3'
+    const url = 'https://info.dengue.mat.br/api/alertcity?geocode=3304557&disease=dengue&format=json&ew_start=0&ew_end=1&ey_start=2019&ey_end=2019' 
 
-    request({ url: url, json: true }, (error, response) =>{
-        console.log(response.body);
+    const dengueCheck = request({ url: url, json: true }, (error, response) =>{
+        
+        const dengueJSON = {
+            body: response
+        }
+
+        return dengueJSON;
     })
 
+    const saveDengueCheck = (dengueCheckFile) => {
+        const dataJSON = dengueCheckFile;
+        fs.writeFileSync('dengue.json', JSON.stringify(dataJSON));
+    }
+
+    saveDengueCheck(dengueCheck);
 }
 
 
 module.exports = {
     weatherCheck: weatherCheck,
     findId: findId,
-    dengue: dengue
+    dengue: dengue,
 }
  

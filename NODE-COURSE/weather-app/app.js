@@ -38,13 +38,6 @@ yargs.command({
 yargs.command({
     command: 'dengue',
     describe: 'are there mosquitos?',
-    builder: {
-        id: {
-            describe: 'dangue ploriflerations(??) last 5 days',
-            demandOption: true,
-            type: 'string'
-        }
-    },
     handler(argv) { 
         return weather.dengue(argv.name)
     }

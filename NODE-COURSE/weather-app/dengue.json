@@ -1,0 +1,21 @@
+{
+    "uri": {
+        "protocol": "https:",
+        "slashes": true,
+        "auth": null,
+        "host": "info.dengue.mat.br",
+        "port": 443,
+        "hostname": "info.dengue.mat.br",
+        "hash": null,
+        "search": "?geocode=3304557&disease=dengue&format=json&ew_start=0&ew_end=1&ey_start=2019&ey_end=2019",
+        "query": "geocode=3304557&disease=dengue&format=json&ew_start=0&ew_end=1&ey_start=2019&ey_end=2019",
+        "pathname": "/api/alertcity",
+        "path": "/api/alertcity?geocode=3304557&disease=dengue&format=json&ew_start=0&ew_end=1&ey_start=2019&ey_end=2019",
+        "href": "https://info.dengue.mat.br/api/alertcity?geocode=3304557&disease=dengue&format=json&ew_start=0&ew_end=1&ey_start=2019&ey_end=2019"
+    },
+    "method": "GET",
+    "headers": {
+        "host": "info.dengue.mat.br",
+        "accept": "application/json"
+    }
+}
