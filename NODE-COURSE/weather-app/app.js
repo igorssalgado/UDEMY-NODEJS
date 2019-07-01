@@ -22,16 +22,18 @@ request({ url: url, json: true }, (error, response) => {
 
 });
 
-// const geocodeURL = "https://api.mapbox.com/geocoding/v5/mapbox.places/Campinas.json?access_token=pk.eyJ1Ijoicm9naS0iLCJhIjoiY2p4a3J5M2JjMWYwZzNvcW5idGpvMDZ0ZyJ9.YHY19utjb5VluDgs0p2Fpg&limit=1";
+const geocodeURL = "https://api.mapbox.com/geocoding/v5/mapbox.places/Campinas.json?access_token=pk.eyJ1Ijoicm9naS0iLCJhIjoiY2p4a3J5M2JjMWYwZzNvcW5idGpvMDZ0ZyJ9.YHY19utjb5VluDgs0p2Fpg&limit=1";
 
-// request({ url: geocodeURL, json: true }, (error, response) => {
+request({ url: geocodeURL, json: true }, (error, response) => {
 
-//     if (error){
-//         console.log("Unable to connect to Geo Code service!");
-//     }else{
-//         const longitude = response.body.features[0].center[0];
-//         const latitude = response.body.features[0].center[1];
-//         console.log("Latitude: %s \nLongitude: %s", latitude, longitude);
-//     }
-// });
+    if (error) {
+        console.log("Unable to connect to Geo Code service!");
+    } else if (response.body.features.length === 0) {
+        console.log("Please check the location input");
+    } else {
+        const longitude = response.body.features[0].center[0];
+        const latitude = response.body.features[0].center[1];
+        console.log("Latitude: %s \nLongitude: %s", latitude, longitude);
+    }
+});
 
