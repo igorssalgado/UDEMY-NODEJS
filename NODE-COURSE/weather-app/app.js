@@ -20,3 +20,12 @@ request({ url: url, json: true }, (error, response) => {
     console.log("It is currently %s Celsius degrees out. There is %s% chance of rain.", temp, chance )
     // console.log("It is currently" + response.body.currently.temperature + " degrees out. There is" +  response.body.currently.precipProbability + "chance of rain.")
 })
+
+const geocodeURL = "https://api.mapbox.com/geocoding/v5/mapbox.places/Campinas.json?access_token=pk.eyJ1Ijoicm9naS0iLCJhIjoiY2p4a3J5M2JjMWYwZzNvcW5idGpvMDZ0ZyJ9.YHY19utjb5VluDgs0p2Fpg&limit=1"
+
+request({ url: geocodeURL, json: true }, (error, response) => {
+    const longitude = response.body.features[0].center[0]
+    const latitude = response.body.features[0].center[1]
+    console.log("Latitude: %s \nLongitude: %s", latitude, longitude)
+})
+
