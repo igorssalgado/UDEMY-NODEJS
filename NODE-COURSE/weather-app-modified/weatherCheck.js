@@ -15,39 +15,39 @@ const weatherCheck = (id) => {
 
 const findId = (city) => {
     
-    const url = 'http://apiadvisor.climatempo.com.br/api/v1/locale/city?name=' + city + '&token=d048672a8b04194a3fc09870673808d3'
+    const url = 'http://apiadvisor.climatempo.com.br/api/v1/locale/city?name=' + encodeURIComponent(city) + '&token=d048672a8b04194a3fc09870673808d3'; // encodeURIComponent(city) threat the words with special charcters to work as URL )
 
-    request({ url: url, json: true }, (error, response) =>{
+    request({ url: url, json: true }, (error, response) => {
         console.log(response.body);
     })
 
 }
 
-const dengue = () => {
+// const dengue = () => {
     
-    const url = 'https://info.dengue.mat.br/api/alertcity?geocode=3304557&disease=dengue&format=json&ew_start=0&ew_end=1&ey_start=2019&ey_end=2019' 
+//     const url = 'https://info.dengue.mat.br/api/alertcity?geocode=3304557&disease=dengue&format=json&ew_start=0&ew_end=1&ey_start=2019&ey_end=2019' 
 
-    const dengueCheck = request({ url: url, json: true }, (error, response) =>{
+//     const dengueCheck = request({ url: url, json: true }, (error, response) =>{
         
-        const dengueJSON = {
-            body: response
-        }
+//         const dengueJSON = {
+//             body: response
+//         }
 
-        return dengueJSON;
-    })
+//         return dengueJSON;
+//     })
 
-    const saveDengueCheck = (dengueCheckFile) => {
-        const dataJSON = dengueCheckFile;
-        fs.writeFileSync('dengue.json', JSON.stringify(dataJSON));
-    }
+//     const saveDengueCheck = (dengueCheckFile) => {
+//         const dataJSON = dengueCheckFile;
+//         fs.writeFileSync('dengue.json', JSON.stringify(dataJSON));
+//     }
 
-    saveDengueCheck(dengueCheck);
-}
+//     saveDengueCheck(dengueCheck);
+// }
 
 
 module.exports = {
     weatherCheck: weatherCheck,
     findId: findId,
-    dengue: dengue,
+    dengue: dengue
 }
  
