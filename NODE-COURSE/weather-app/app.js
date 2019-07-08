@@ -1,13 +1,23 @@
 const geocode = require('./utils/geocode');
 const forecast = require('./utils/forecast');
 
-geocode('campinas', (error, data) => {
-    console.log('Error:', error);
-    console.log('Data:', data)
-});
+const address = process.argv[2];
 
-// order: lat, long
-forecast( -22.9056 , -47.0608, (error, data) => { 
-    console.log('Error:', error)
-    console.log('Data:', data)
-  })
+if(!address){
+    return console.log('Please provide an address');
+}
+
+geocode(address, (error, data) => {
+    if(error){ 
+      return console.log('Error:', error);
+    }
+
+    forecast( data.latitude , data.longitude, (error, forecastData) => {     // order: lat, long
+        if(error){
+            return console.log('Error:', error)
+        }
+
+       console.log(data.location);
+       console.log(forecastData);
+    })
+});
