@@ -4,16 +4,16 @@ const geocode = (address, callback) => {
     
     const url = 'https://api.mapbox.com/geocoding/v5/mapbox.places/' + encodeURIComponent(address) + '.json?access_token=pk.eyJ1Ijoicm9naS0iLCJhIjoiY2p4a3J5M2JjMWYwZzNvcW5idGpvMDZ0ZyJ9.YHY19utjb5VluDgs0p2Fpg&limit=1'
 
-    request({ url: url, json: true }, (error, response) => {
+    request({ url, json: true }, (error, { body }) => {
         if (error) {
             callback('Unable to connect to Geo Code service!', undefined);
-        } else if (response.body.features.length === 0) {
+        } else if (body.features.length === 0) {
             callback('Please check the location. Try another search.', undefined)
         } else {
             callback(undefined, {
-                longitude: response.body.features[0].center[0],
-                latitude: response.body.features[0].center[1],
-                location: response.body.features[0].place_name
+                longitude: body.features[0].center[0],
+                latitude: body.features[0].center[1],
+                location: body.features[0].place_name
             })
         }
 
