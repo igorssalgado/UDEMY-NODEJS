@@ -5,3 +5,8 @@ h1 {
 img {
     width: 250px;
 }
+
+footer {
+    color: blue;
+    font-size: 70%
+}
