@@ -1,10 +1,13 @@
 // CRUD create read update delete
 
-const mongodb = require('mongodb');
-const MongoClient = mongodb.MongoClient;
+const { MongoClient, ObjectID } = require('mongodb');
 
-const connectionURL = 'mongodb://127.0.0.1:27017'
-const databaseName = 'task-manager'
+const connectionURL = 'mongodb://127.0.0.1:27017';
+const databaseName = 'task-manager';
+
+const id = new ObjectID();
+console.log(id.id.length);
+console.log(id.toHexString().length);
 
 MongoClient.connect(connectionURL, { useNewUrlParser: true }, (error, client) => {
     if (error) {
@@ -14,15 +17,14 @@ MongoClient.connect(connectionURL, { useNewUrlParser: true }, (error, client) =>
     const db = client.db(databaseName);
 
     // db.collection('users').insertOne({
-    //     name: 'Igor',
-    //     age: 27
+    //     name: 'Taynara',
+    //     age: 24
     // },(error, result) => {
     //     if (error){
     //         return console.log('Unable to insert user!');
     //     }
 
     //     console.log(result.ops);
-    //     console.log(result.insertedCount);
     // })
 
     // db.collection('users').insertMany([
@@ -44,22 +46,22 @@ MongoClient.connect(connectionURL, { useNewUrlParser: true }, (error, client) =>
     //     // console.log(result.insertedIds)
     // })
 
-    db.collection('tasks').insertMany([
-        {
-            description: "description is a description",
-            completed: true
-        },{
-            description: "this description is another description",
-            completed: false
-        },{
-            description: "wow a new description which is a description",
-            completed: false
-        }
-    ], (error, result) => {
-            if (error){
-                return console.log("Unable to insert task!");
-            }
+    // db.collection('tasks').insertMany([
+    //     {
+    //         description: "description is a description",
+    //         completed: true
+    //     },{
+    //         description: "this description is another description",
+    //         completed: false
+    //     },{
+    //         description: "wow a new description which is a description",
+    //         completed: false
+    //     }
+    // ], (error, result) => {
+    //         if (error){
+    //             return console.log("Unable to insert task!");
+    //         }
 
-            console.log(result.ops);
-    })
+    //         console.log(result.ops);
+    // })
 })
