@@ -13,15 +13,26 @@ const User = mongoose.model('User', {
         required: true,
         trim: true
     },
-    email:{
+    password: {
+        type: String,
+        required: true,
+        trim: true,
+        minlength: 7,
+        trim: true,
+        validate(value) {
+            if (value.toLowerCase().includes("password")) {
+                throw new Error("Password should not contains 'password' word");
+            }
+        }
+    },
+    email: {
         type: String,
         required: true,
         trim: true,
         lowercase: true,
-        validate(value){
+        validate(value) {
             if (!validator.isEmail(value)) {
                 throw new Error('Email is invalid');
-
             }
         }
     },
@@ -38,36 +49,42 @@ const User = mongoose.model('User', {
 
 const Task = mongoose.model('Task', {
     descripion: {
-        type: String
+        type: String,
+        requried: true,
+        trim: true
     },
     completed: {
-        type: Boolean
+        type: Boolean,
+        default: false
     }
 });
 // Model
 
 // Method calls
 
-const me = new User({
-    name: '   Igor  ',
-    email: ' myemaiL@gmail.coM   '
+const task = new Task({
+    descripion: " feed the dogs again         ",
+    completed: true
 });
 
-me.save().then(() => {
-    console.log(me);
+task.save().then(() => {
+    console.log(task);
 }).catch((error) => {
-    console.log('Error!', error)
-})
+    console.log('Error to save task!', error)
+});
 
-// const task = new Task({
-//     descripion: "feed the dogs",
-//     completed: true
+// const me = new User({
+//     name: '   Igor  ',
+//     email: ' myemaiL@gmail.coM   ',
+//     password: 'testingpassw0rd'
 // });
 
-// task.save().then(() => {
-//     console.log(task);
+// me.save().then(() => {
+//     console.log(me);
 // }).catch((error) => {
-//     console.log('Error to save task!', error)
-// });
+//     console.log('Error!', error)
+// })
+
+
 
 // Method calls
