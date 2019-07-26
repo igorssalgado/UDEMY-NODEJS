@@ -1,18 +1,39 @@
 const mongoose = require('mongoose');
-
+const validator = require('validator');
 
 mongoose.connect('mongodb://127.0.0.1:27017/task-manager-api', {
     useNewUrlParser: true,
     useCreateIndex: true
 });
 
+// Model
 const User = mongoose.model('User', {
-   name: {
-       type: String
-   },
-   age: {
-       type: Number
-   }
+    name: {
+        type: String,
+        required: true,
+        trim: true
+    },
+    email:{
+        type: String,
+        required: true,
+        trim: true,
+        lowercase: true,
+        validate(value){
+            if (!validator.isEmail(value)) {
+                throw new Error('Email is invalid');
+
+            }
+        }
+    },
+    age: {
+        type: Number,
+        default: 0,
+        validate(value) {
+            if (value < 0) {
+                throw new Error('Age must be a positive number');
+            }
+        }
+    }
 });
 
 const Task = mongoose.model('Task', {
@@ -23,25 +44,30 @@ const Task = mongoose.model('Task', {
         type: Boolean
     }
 });
+// Model
 
-const task = new Task({
-    descripion: "feed the dogs",
-    completed: true
+// Method calls
+
+const me = new User({
+    name: '   Igor  ',
+    email: ' myemaiL@gmail.coM   '
 });
 
-task.save().then(() => {
-    console.log(task);
+me.save().then(() => {
+    console.log(me);
 }).catch((error) => {
-    console.log('Error to save task!', error)
-});
+    console.log('Error!', error)
+})
 
-// const me = new User({
-//     name: 'Igor',
-//     age: 27
+// const task = new Task({
+//     descripion: "feed the dogs",
+//     completed: true
 // });
 
-// me.save().then(() => {
-//     console.log(me);
-// }).catch((error) =>{
-//     console.log('Error!', error)
-// })
+// task.save().then(() => {
+//     console.log(task);
+// }).catch((error) => {
+//     console.log('Error to save task!', error)
+// });
+
+// Method calls
