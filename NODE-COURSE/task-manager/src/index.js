@@ -15,9 +15,9 @@ const port = process.env.PORT || 3000;
 // });
 
 //Middleware for Maint mode
-app.use((req, res, next) => {
-    res.status(503).send('Server is currently down. check later.');
-});
+// app.use((req, res, next) => {
+//     res.status(503).send('Server is currently down. check later.');
+// });
 
 app.use(express.json());
 app.use(userRouter);
