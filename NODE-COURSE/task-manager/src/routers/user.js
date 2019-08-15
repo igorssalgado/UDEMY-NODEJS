@@ -17,6 +17,42 @@ router.post('/users', async (req, res) => {
     }
 });
 
+router.post('/users/logout', auth, async (req, res) => {
+    try {
+        req.user.tokens = req.user.tokens.filter((token) => {
+            return token.token !== req.token;
+        });
+
+        await req.user.save();
+
+        res.send();
+    } catch (e) {
+        res.status(500).send()
+    }
+})
+
+router.post('/users/logoutAll', auth, async (req, res) => {
+    try {
+        req.user.tokens = [];
+        await req.user.save();
+        res.send();
+    } catch (e) {
+        res.status(500).send()
+    }
+})
+
+// { USER AVAILABLE
+// 	"name": "Igor Salgado",
+// 	"email": "ksks@kkkj.com",
+// 	"password": "!saaaes2s$"
+// }
+
+// {
+// 	"name": "Taynara Derbona",
+// 	"email": "tay@gmail.com",
+// 	"password": "m0z40s2"
+// }
+
 //to login with a user and gerating a session token
 router.post('/users/login', async (req, res) => {
     try {
