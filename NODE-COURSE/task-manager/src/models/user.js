@@ -49,6 +49,8 @@ const userSchema = new mongoose.Schema({
             required: true
         }
     }]
+}, {
+    timestamps: true
 });
 
 //virtual property (not actually changing, just a way to mongoose(not in DB) to figure out how the things are related)
