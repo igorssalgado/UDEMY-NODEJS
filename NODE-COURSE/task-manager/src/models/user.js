@@ -50,6 +50,14 @@ const userSchema = new mongoose.Schema({
     }]
 });
 
+//virtual property (not actually changing, just a way to mongoose(not in DB) to figure out how the things are related)
+userSchema.virtual('tasks', {
+    ref: 'Task',
+    localField: '_id',
+    foreignField: 'owner'
+})
+
+
 //not showing important to the user
 userSchema.methods.toJSON = function () {
     const user = this;

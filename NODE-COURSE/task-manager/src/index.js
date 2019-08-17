@@ -27,14 +27,18 @@ app.listen(port, () => {
     console.log('Server is running on port ' + port);
 });
 
-const jwt = require('jsonwebtoken');
+const Task = require('./models/task');
+const User = require('./models/user');
 
-const myFunction = async () => {
-    const token = jwt.sign({ _id: 'abc123' }, 'thisismynewcourse', { expiresIn: '4 seconds' });
-    console.log(token);
+const main = async () => {
+    // const task = await Task.findById('5d5754c6e92d4520940f975e');
+    // await task.populate('owner').execPopulate() //it is gonna 'go off', find the user associate with this task and task.owner will be their profile the entire document opose of just being the id
+    // console.log(task.owner);
 
-    const data = jwt.verify(token, 'thisismynewcourse')
-    console.log(data);
-};
+    const user = await User.findById('5d5750d70e2a2701bcc78ece');
+    await user.populate('tasks').execPopulate();
+    console.log(user.tasks);
+    console.log(user.name);
+}  
 
-myFunction();
+main();
