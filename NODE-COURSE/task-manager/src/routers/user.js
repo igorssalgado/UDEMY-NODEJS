@@ -1,7 +1,7 @@
 const express = require('express');
 const User = require('../models/user');
 const auth = require('../middleware/auth');
-const filesUpload = require('../middleware/filesUpload');
+const filesUpload = require('../middleware/imgUpload');
 
 const router = new express.Router();
 
@@ -111,12 +111,8 @@ router.delete('/users/me', auth, async (req, res) => {
     }
 })
 
-router.post('/users/me/avatar', filesUpload.single('avatars'), (req, res) => {
-    try{
-        res.status(200).send('all good');
-    }catch(e){
-        res.status(400).send('upload failed');
-    }
+router.post('/users/me/avatar', auth, imgUpload.single('avatars'), (req, res) => {
+        res.status();
 }, (error, req, res, next) => {
     res.status(400).send({error: error.message});
 });
