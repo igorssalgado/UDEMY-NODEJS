@@ -117,7 +117,8 @@ router.post('/users/me/avatar', filesUpload.single('avatars'), (req, res) => {
     }catch(e){
         res.status(400).send('upload failed');
     }
-    
+}, (error, req, res, next) => {
+    res.status(400).send({error: error.message});
 });
 
 module.exports = router;
