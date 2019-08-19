@@ -112,7 +112,12 @@ router.delete('/users/me', auth, async (req, res) => {
 })
 
 router.post('/users/me/avatar', filesUpload.single('avatars'), (req, res) => {
-    res.send();
+    try{
+        res.status(200).send('all good');
+    }catch(e){
+        res.status(400).send('upload failed');
+    }
+    
 });
 
 module.exports = router;
