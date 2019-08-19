@@ -1,7 +1,7 @@
 const express = require('express');
 const User = require('../models/user');
 const auth = require('../middleware/auth');
-const imgUpload = require('../middleware/imgUpload');
+const imgUploaded = require('../middleware/imgUploaded');
 
 const router = new express.Router();
 
@@ -100,7 +100,7 @@ router.patch('/users/me', auth, async (req, res) => {
     }
 })
 
-//to delete a user by id
+//to delete a user
 router.delete('/users/me', auth, async (req, res) => {
     try {
         await req.user.remove();
@@ -111,10 +111,18 @@ router.delete('/users/me', auth, async (req, res) => {
     }
 })
 
-router.post('/users/me/avatar', auth, imgUpload.single('avatars'), (req, res) => {
-        res.status(200).send('File uploaded successfully.');
+router.post('/users/me/avatar', auth, imgUploaded.single('avatar'), async (req, res) => {
+    req.user.avatar = req.file.buffer //multer processed the data passed to this function, storing the avatar data on req.user.avatar field and saving it on the db
+    await req.user.save()
+    res.status(200).send('File uploaded successfully.');
 }, (error, req, res, next) => {
-    res.status(400).send({error: error.message});
+    res.status(400).send({ error: error.message });
 });
+
+router.delete('/users/me/avatar', auth, async (req, res) => {
+    req.user.avatar = undefined
+    await req.user.save()
+    res.status(200).send()
+})
 
 module.exports = router;
