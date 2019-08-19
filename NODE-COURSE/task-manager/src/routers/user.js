@@ -1,7 +1,7 @@
 const express = require('express');
 const User = require('../models/user');
 const auth = require('../middleware/auth');
-const filesUpload = require('../middleware/imgUpload');
+const imgUpload = require('../middleware/imgUpload');
 
 const router = new express.Router();
 
