@@ -6,18 +6,25 @@ const taskRouter = require('./routers/task')
 const app = express();
 const port = process.env.PORT || 3000;
 
-// app.use((req, res, next) => {
-//     if (req.method === 'GET') {
-//         res.send('Get requests are disable');
-//     } else {
-//         next();
+// const multer = require('multer');
+// const upload = multer({
+//     dest: 'images',
+//     limits: {
+//         fileSize: 1000000 //MB
+//     },
+//     fileFilter(req, file, cb) {
+//         if (!file.originalname.match(/\.(doc|docx)$/)) {
+//             return cb(new Error('Plase upload a Word document'));
+//         }
+//         cb(undefined, true);
 //     }
 // });
 
-//Middleware for Maint mode
-// app.use((req, res, next) => {
-//     res.status(503).send('Server is currently down. check later.');
-// });
+// app.post('/upload', upload.single('upload'), (req, res) => {
+//     res.status(200).send('all good');
+// }, (error, req, res, next) => {
+//     res.status(400).send({error: error.message});
+// })
 
 app.use(express.json());
 app.use(userRouter);
@@ -26,19 +33,3 @@ app.use(taskRouter);
 app.listen(port, () => {
     console.log('Server is running on port ' + port);
 });
-
-// const Task = require('./models/task');
-// const User = require('./models/user');
-
-// const main = async () => {
-//     // const task = await Task.findById('5d5754c6e92d4520940f975e');
-//     // await task.populate('owner').execPopulate() //it is gonna 'go off', find the user associate with this task and task.owner will be their profile the entire document opose of just being the id
-//     // console.log(task.owner);
-
-//     const user = await User.findById('5d575df855b31004f050f29b');
-//     await user.populate('tasks').execPopulate();
-//     console.log(user.tasks);
-//     console.log(user.name);
-// }  
-
-// main();
