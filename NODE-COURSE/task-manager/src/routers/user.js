@@ -112,8 +112,8 @@ router.delete('/users/me', auth, async (req, res) => {
 })
 
 router.post('/users/me/avatar', auth, imgUploaded.single('avatar'), async (req, res) => {
-    req.user.avatar = req.file.buffer //multer processed the data passed to this function, storing the avatar data on req.user.avatar field and saving it on the db
-    await req.user.save()
+    req.user.avatar = req.file.buffer; //multer processed the data passed to this function, storing the avatar data on req.user.avatar field and saving it on the db
+    await req.user.save();
     res.status(200).send('File uploaded successfully.');
 }, (error, req, res, next) => {
     res.status(400).send({ error: error.message });
@@ -121,8 +121,24 @@ router.post('/users/me/avatar', auth, imgUploaded.single('avatar'), async (req, 
 
 router.delete('/users/me/avatar', auth, async (req, res) => {
     req.user.avatar = undefined
-    await req.user.save()
-    res.status(200).send()
-})
+    await req.user.save();
+    res.status(200).send();
+});
+
+//to check the avatar by user id
+router.get('/users/:id/avatar', async (req, res) => {
+    try {
+        const user = await User.findById(req.params.id);
+
+        if(!user || !user.avatar) {
+            throw new Error();
+        }
+
+        res.set('Content-Type', 'image/jpg');
+        res.send(user.avatar)
+    } catch (e) {
+        res.status(404).send();
+    }
+});
 
 module.exports = router;
