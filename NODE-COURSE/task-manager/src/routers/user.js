@@ -112,7 +112,7 @@ router.delete('/users/me', auth, async (req, res) => {
 })
 
 router.post('/users/me/avatar', auth, imgUpload.single('avatars'), (req, res) => {
-        res.status();
+        res.status(200).send('File uploaded successfully.');
 }, (error, req, res, next) => {
     res.status(400).send({error: error.message});
 });
