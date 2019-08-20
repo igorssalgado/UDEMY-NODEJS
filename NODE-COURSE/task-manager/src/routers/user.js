@@ -3,7 +3,7 @@ const User = require('../models/user');
 // const sharp = require('sharp'); cuz at work it is not allowed --"
 const auth = require('../middleware/auth');
 const imgUploaded = require('../middleware/imgUploaded');
-const { sendWelcomeEmail } = require('../emails/account');
+const { sendWelcomeEmail, sendGoodbyeEmail } = require('../emails/account');
 
 const router = new express.Router();
 
@@ -107,8 +107,8 @@ router.patch('/users/me', auth, async (req, res) => {
 router.delete('/users/me', auth, async (req, res) => {
     try {
         await req.user.remove();
+        sendGoodbyeEmail(req.user.email, req.user.name);
         res.send(req.user)
-
     } catch (e) {
         res.status(500).send(e);
     }
