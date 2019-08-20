@@ -1,8 +1,9 @@
 const express = require('express');
 const User = require('../models/user');
-const sharp = require('sharp');
+// const sharp = require('sharp'); cuz at work it is not allowed --"
 const auth = require('../middleware/auth');
 const imgUploaded = require('../middleware/imgUploaded');
+const { sendWelcomeEmail, sendGoodbyeEmail } = require('../emails/account');
 
 const router = new express.Router();
 
@@ -12,6 +13,7 @@ router.post('/users', async (req, res) => {
 
     try {
         await user.save();
+        sendWelcomeEmail(user.email, user.name)
         const token = await user.generateAuthToken()
         res.status(201).send({ user, token });
     } catch (e) {
@@ -105,23 +107,23 @@ router.patch('/users/me', auth, async (req, res) => {
 router.delete('/users/me', auth, async (req, res) => {
     try {
         await req.user.remove();
+        sendGoodbyeEmail(req.user.email, req.user.name);
         res.send(req.user)
-
     } catch (e) {
         res.status(500).send(e);
     }
 })
 
 //to upload a avatar to an user
-router.post('/users/me/avatar', auth, imgUploaded.single('avatar'), async (req, res) => {
-    const buffer = await sharp(req.file.buffer).resize({ width: 250, height: 250 }).png().toBuffer()
+// router.post('/users/me/avatar', auth, imgUploaded.single('avatar'), async (req, res) => {
+//     const buffer = await sharp(req.file.buffer).resize({ width: 250, height: 250 }).png().toBuffer()
     
-    req.user.avatar = buffer; //multer processed the data passed to this function, storing the avatar data on req.user.avatar field and saving it on the db
-    await req.user.save();
-    res.status(200).send('File uploaded successfully.');
-}, (error, req, res, next) => {
-    res.status(400).send({ error: error.message });
-});
+//     req.user.avatar = buffer; //multer processed the data passed to this function, storing the avatar data on req.user.avatar field and saving it on the db
+//     await req.user.save();
+//     res.status(200).send('File uploaded successfully.');
+// }, (error, req, res, next) => {
+//     res.status(400).send({ error: error.message });
+// });
 
 router.delete('/users/me/avatar', auth, async (req, res) => {
     req.user.avatar = undefined
