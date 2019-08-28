@@ -12,14 +12,18 @@ const publicDirectoryPath = path.join(__dirname, '../public')
 
 app.use(express.static(publicDirectoryPath));
 
-
 io.on('connection', (socket) => { // connection is going to fire whenever the socked.io server gets a new connection
     console.log('New WebSocket connection')
 
     socket.emit('message', 'Welcome!');
+    socket.broadcast.emit('message', 'A new user has joined')
 
     socket.on('sendMessage', (msg) => {
         io.emit('message', msg)
+    })
+
+    socket.on('disconnect', () =>{ // () this code is going to run whenever a user is disconnected
+        io.emit('message', 'A user has left!')
     })
 })
 
