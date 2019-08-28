@@ -25,6 +25,10 @@ io.on('connection', (socket) => { // connection is going to fire whenever the so
     socket.on('disconnect', () =>{ // () this code is going to run whenever a user is disconnected
         io.emit('message', 'A user has left!')
     })
+
+    socket.on('sendLocation', (coords)=>{
+        io.emit('message', `https://google.com/maps?q=${coords.latitude},${coords.longitude}`);
+    })
 })
 
 server.listen(port, () => {
