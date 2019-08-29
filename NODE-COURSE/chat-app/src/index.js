@@ -25,6 +25,10 @@ io.on('connection', (socket) => { // connection is going to fire whenever the so
         if (filter.isProfane(msg)) {
             return callback('Profanity is not allowed!')
         }
+        
+        if(msg.trim() === ''){
+            return callback('Message cannot be empty!')
+        }
 
         io.emit('message', msg);
         callback('Delivered!');
