@@ -39,8 +39,10 @@ io.on('connection', (socket) => { // connection is going to fire whenever the so
     })
 
     socket.on('sendLocation', (coords, callback) => {
-        io.emit('message', `https://google.com/maps?q=${coords.latitude},${coords.longitude}`);
-
+        const locationURL = `https://google.com/maps?q=${coords.latitude},${coords.longitude}`;
+        
+        io.emit('locationMessage', locationURL);
+        
         callback();
     })
 })

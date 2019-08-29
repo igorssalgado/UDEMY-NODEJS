@@ -5,9 +5,26 @@ const $messageForm = document.querySelector('#message-form');
 const $messageFormInput = $messageForm.querySelector('input');
 const $messageFormButton = $messageForm.querySelector('button');
 const $sendLocationButton = document.querySelector('#send-location');
+const $messages = document.querySelector('#messages');
 
-socket.on('message', (welcomeMessage) => {
-    console.log(welcomeMessage);
+
+// Templates
+const messageTemplate = document.querySelector('#message-template').innerHTML;
+const locationTemplate = document.querySelector('#location-template').innerHTML;
+
+socket.on('locationMessage', (locationURL) => {
+    const html = Mustache.render(locationTemplate, {
+        locationURL
+    })
+    $messages.insertAdjacentHTML('beforeend', html);
+})
+
+socket.on('message', (message) => {
+    console.log(message);
+    const html = Mustache.render(messageTemplate, {
+        message
+    })
+    $messages.insertAdjacentHTML('beforeend', html);
 })
 
 $messageForm.addEventListener('submit', (e) => {
