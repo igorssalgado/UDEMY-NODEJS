@@ -1,7 +1,8 @@
 const path = require('path');
 const http = require('http');
 const express = require('express');
-const sockedio = require('socket.io')
+const sockedio = require('socket.io');
+const Filter = require('bad-words');
 
 const app = express();
 const server = http.createServer(app); //allows to create a web server for socket.io
@@ -18,16 +19,25 @@ io.on('connection', (socket) => { // connection is going to fire whenever the so
     socket.emit('message', 'Welcome!');
     socket.broadcast.emit('message', 'A new user has joined')
 
-    socket.on('sendMessage', (msg) => {
-        io.emit('message', msg)
+    socket.on('sendMessage', (msg, callback) => {
+        const filter = new Filter();
+
+        if (filter.isProfane(msg)) {
+            return callback('Profanity is not allowed!')
+        }
+
+        io.emit('message', msg);
+        callback('Delivered!');
     })
 
-    socket.on('disconnect', () =>{ // () this code is going to run whenever a user is disconnected
+    socket.on('disconnect', () => { // () this code is going to run whenever a user is disconnected
         io.emit('message', 'A user has left!')
     })
 
-    socket.on('sendLocation', (coords)=>{
+    socket.on('sendLocation', (coords, callback) => {
         io.emit('message', `https://google.com/maps?q=${coords.latitude},${coords.longitude}`);
+
+        callback();
     })
 })
 
