@@ -7,14 +7,15 @@ const $messageFormButton = $messageForm.querySelector('button');
 const $sendLocationButton = document.querySelector('#send-location');
 const $messages = document.querySelector('#messages');
 
-
 // Templates
 const messageTemplate = document.querySelector('#message-template').innerHTML;
 const locationTemplate = document.querySelector('#location-template').innerHTML;
 
-socket.on('locationMessage', (locationURL) => {
+socket.on('locationMessage', (message) => {
+    console.log(message);
     const html = Mustache.render(locationTemplate, {
-        locationURL
+        url: message.url,
+        createdAt: moment(message.createdAt).format('h:mm:ss a')
     })
     $messages.insertAdjacentHTML('beforeend', html);
 })
@@ -22,7 +23,8 @@ socket.on('locationMessage', (locationURL) => {
 socket.on('message', (message) => {
     console.log(message);
     const html = Mustache.render(messageTemplate, {
-        message
+        message: message.text,
+        createdAt: moment(message.createdAt).format('h:mm:ss a')
     })
     $messages.insertAdjacentHTML('beforeend', html);
 })
@@ -66,6 +68,7 @@ $sendLocationButton.addEventListener('click', () => {
             setTimeout(() => {
                 $sendLocationButton.removeAttribute('disabled', 'disabled');
             }, 200);
+            console.log('')
             console.log('Location shared!')
         })
     })

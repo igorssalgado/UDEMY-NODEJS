@@ -3,6 +3,7 @@ const http = require('http');
 const express = require('express');
 const sockedio = require('socket.io');
 const Filter = require('bad-words');
+const { generateMessage, generateLocationMessage } = require('./utils/messages');
 
 const app = express();
 const server = http.createServer(app); //allows to create a web server for socket.io
@@ -16,8 +17,8 @@ app.use(express.static(publicDirectoryPath));
 io.on('connection', (socket) => { // connection is going to fire whenever the socked.io server gets a new connection
     console.log('New WebSocket connection')
 
-    socket.emit('message', 'Welcome!');
-    socket.broadcast.emit('message', 'A new user has joined')
+    socket.emit('message', generateMessage('Welcome'));
+    socket.broadcast.emit('message', generateMessage('A new user has joined'))
 
     socket.on('sendMessage', (msg, callback) => {
         const filter = new Filter();
@@ -25,24 +26,21 @@ io.on('connection', (socket) => { // connection is going to fire whenever the so
         if (filter.isProfane(msg)) {
             return callback('Profanity is not allowed!')
         }
-        
-        if(msg.trim() === ''){
+
+        if (msg.trim() === '') {
             return callback('Message cannot be empty!')
         }
 
-        io.emit('message', msg);
-        callback('Delivered!');
+        io.emit('message', generateMessage(msg));
+        callback();
     })
 
     socket.on('disconnect', () => { // () this code is going to run whenever a user is disconnected
-        io.emit('message', 'A user has left!')
+        io.emit('message', generateMessage('A user has left!'))
     })
 
     socket.on('sendLocation', (coords, callback) => {
-        const locationURL = `https://google.com/maps?q=${coords.latitude},${coords.longitude}`;
-        
-        io.emit('locationMessage', locationURL);
-        
+        io.emit('locationMessage', generateLocationMessage(`https://google.com/maps?q=${coords.latitude},${coords.longitude}`));
         callback();
     })
 })
