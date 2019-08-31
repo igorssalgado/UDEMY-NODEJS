@@ -41,7 +41,6 @@ io.on('connection', (socket) => { // connection is going to fire whenever the so
         const filter = new Filter();
         const user = getUser(socket.id);
 
-        console.log(user);
         if (filter.isProfane(msg)) {
             return callback('Profanity is not allowed!')
         }
