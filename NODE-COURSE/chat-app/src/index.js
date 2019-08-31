@@ -34,6 +34,11 @@ io.on('connection', (socket) => { // connection is going to fire whenever the so
         socket.emit('message', generateMessage('Admin', `Welcome ${user.username}!`));
         socket.broadcast.to(user.room).emit('message', generateMessage('Admin',`${user.username} has joined`))
 
+        io.to(user.room).emit('roomData', { 
+            room: user.room,
+            users: getUsersInRoom(user.room)
+        })
+
         callback();
     })
 
@@ -65,6 +70,10 @@ io.on('connection', (socket) => { // connection is going to fire whenever the so
 
         if (user) {
             io.to(user.room).emit('message', generateMessage('Admin',`${user.username} has left!`))
+            io.to(user.room).emit('roomData', { 
+                room: user.room,
+                users: getUsersInRoom(user.room)
+            })
         }
     })
 })
